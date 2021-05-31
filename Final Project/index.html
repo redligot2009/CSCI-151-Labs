@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project</title>
+    <link rel="stylesheet" href="styles.css"> 
+
+    <!-- Bootstrap 4 dependencies -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="index.js"></script>
+</head>
+<body>
+    <!--    
+        The Metropolitan Museum of Art Collection API API
+        Endpoint to list all departments
+        https://collectionapi.metmuseum.org/public/collection/v1/departments 
+        
+        Search API endpoint to get matching Object IDs:
+        https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true
+
+        API endpoint to get all object IDs:
+        https://collectionapi.metmuseum.org/public/collection/v1/objects
+
+        API endpoint to get specific Object details (including image URL).
+        https://collectionapi.metmuseum.org/public/collection/v1/objects/417851
+        - primaryImage (full size)
+        - primaryImageSmall (thumbnail)
+    -->
+
+    <!-- 
+        Tier: C+ 
+        - Display 10 artworks in a grid with title + description.
+        - Modal dialog box to view full image.
+    -->
+
+    <!-- Tier: B 
+        - Checkbox to show only highlighted artworks (based on API response)
+    -->
+
+    <!-- Tier B+ 
+        - Sidebar to show different departments to filter against.
+        - Ticking the departments filters the results to the first 10 artworks of the department
+        - Clicking on the department again (unticking) clears the filter.
+    -->
+        
+    <!-- Tier A 
+        - Search bar to query for title of work
+        - Show all matching results that the API returns.
+        - When search bar is cleared, results are reset without the filter of search bar.
+    -->
+    <div id="artwork-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="artwork-image-modal">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="container">
+        <div id="image-gallery-controls">
+            <h3>Search Query</h3>
+            <input id="search-bar" type="text" name="q" value="">
+            <br>
+            <input id="is-highlight" type="checkbox" value="true" name="isHighlight">
+            <label for="is-highlight">Is Highlight</label>
+            <h3>Department Choices</h3>
+            <ul id="department-choices">
+                <li class="department-choice">
+                    <input id="department-none" checked type="radio" name="departmentId" value="">
+                    <label for="department-none">None</label>
+                </li>
+            </ul>
+        </div>
+        <div id='image-gallery'>
+            
+        </div>
+    </div>
+</body>
+</html>

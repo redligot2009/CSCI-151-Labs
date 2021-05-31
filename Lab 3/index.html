@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3 - DOM Manipulation with Javascript</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <!-- Container element for all boards -->
+    <div id='board-container'>
+
+    </div>
+    <!-- Action buttons -->
+    <div>
+        <button id='expand-all-button'>
+            Expand All
+        </button>
+    </div>
+    <div>
+        <input type='text' id='specified-board-input'>
+    </div>
+    <div>
+        <button id='expand-specified-button'>
+            Expand Specified
+        </button>
+    </div>
+</body>
+<script>
+    // (Watch as my sanity slips because of making all of this vanilla DOM manipulation 🤪)
+    
+    // Get boards container element
+    let boardContainer = document.getElementById('board-container');
+
+    // Add action buttons event listeners
+
+    // "Expand All" event listener
+    document.getElementById('expand-all-button').onclick = function(e) {
+        let index = 0;
+        let currentBoard = boardContainer.getElementsByClassName('board').item(index);
+        while(currentBoard !== null)
+        {
+            let currentBoardContent = currentBoard.getElementsByClassName('board-content').item(0);
+            currentBoardContent.classList.toggle('hidden',false);
+            index ++;
+            currentBoard = boardContainer.getElementsByClassName('board').item(index);
+        }
+    }
+
+    // "Expand Specified" event listener
+    document.getElementById('expand-specified-button').onclick = function(e) {
+        let index = 0;
+        let currentBoard = boardContainer.getElementsByClassName('board').item(index);
+        let inputtedBoardTitle = document.getElementById('specified-board-input').value;
+        // console.log(inputtedBoardTitle);
+        while(currentBoard !== null)
+        {
+            let currentBoardContent = currentBoard.getElementsByClassName('board-content').item(0);
+            let currentBoardTitle = currentBoard.getElementsByClassName('board-title').item(0);
+            if(currentBoardTitle.innerHTML === inputtedBoardTitle)
+            {
+                currentBoardContent.classList.toggle('hidden',false);
+                break;
+            }
+            index ++;
+            currentBoard = boardContainer.getElementsByClassName('board').item(index);
+        }
+    }
+
+    // Create 5 boards
+    for (let i = 1; i <= 5; i++)
+    {
+        // Create new board div element
+        let newBoard = document.createElement('div');
+        newBoard.setAttribute('id',`board-${i}`)
+        newBoard.classList.add('board');
+
+        // Create + append board name header (h1)
+        let boardName_h1 = document.createElement('h1');
+        boardName_h1.innerHTML = `Board ${i}`;
+        boardName_h1.classList.add('board-title')
+        newBoard.appendChild(boardName_h1)
+
+        // Create + append board contents container (div)
+        let boardContents_div = document.createElement('div');
+        boardContents_div.classList.add('board-content')
+
+        // Creating sample unordered list
+        let newList_ul = document.createElement('ul');
+        let listContents = ['A', ' B', 'C']
+
+        // Creating + appending sample list items to unordered list
+        for(let i = 0; i < listContents.length; i++)
+        {
+            let newListItem_li = document.createElement('li');
+            newListItem_li.innerHTML = listContents[i];
+            newList_ul.appendChild(newListItem_li)
+        }
+
+        // Appending sample unordered list to new board
+        boardContents_div.appendChild(newList_ul);
+
+        // Create + append "Actions" header (h2)
+        let actionsHeader_h2 = document.createElement('h2');
+        boardContents_div.appendChild(actionsHeader_h2);
+
+        // Create + append "Collapse All Before" button
+        let collapseAllBefore_button = document.createElement('button');
+        collapseAllBefore_button.innerHTML = 'Collapse All Before';
+        collapseAllBefore_button.classList.add('collapse-all-before-btn');
+        boardContents_div.appendChild(collapseAllBefore_button)
+
+        // Create + append "Collapse All After" button
+        let collapseAllAfter_button = document.createElement('button');
+        collapseAllAfter_button.innerHTML = 'Collapse All After';
+        collapseAllAfter_button.classList.add('collapse-all-after-btn');
+        boardContents_div.appendChild(collapseAllAfter_button)
+        
+        // Create + append "Collapse This Board" button
+        let collapseThis_button = document.createElement('button');
+        collapseThis_button.innerHTML = 'Collapse This Board';
+        collapseThis_button.classList.add('collapse-this-btn');
+        boardContents_div.appendChild(collapseThis_button)
+        
+        // Create + append "Collapse All" button
+        let collapseAll_button = document.createElement('button');
+        collapseAll_button.innerHTML = 'Collapse All';
+        collapseAll_button.classList.add('collapse-all-btn');
+        boardContents_div.appendChild(collapseAll_button)
+
+        // Append board contents to new board
+        newBoard.appendChild(boardContents_div);
+
+        // Append board to document body
+        boardContainer.appendChild(newBoard);
+
+        // Insanity begins... 🧠 💯
+
+        // "Collapse This Board" event listener
+        collapseThis_button.onclick = function(e) {
+            boardContents_div.classList.toggle('hidden', true);
+        }
+
+        // "Expand Board" event listener
+        boardName_h1.onclick = function(e) {
+            boardContents_div.classList.toggle('hidden', false);
+        }
+
+        // "Collapse All Before" event listener
+        collapseAllBefore_button.onclick = function(e) {
+            console.log("FUCKER")
+            let previousBoard = newBoard.previousElementSibling;
+            while(previousBoard !== null)
+            {
+                let previousBoardContent = previousBoard.getElementsByClassName('board-content').item(0);
+                previousBoardContent.classList.toggle('hidden',true);
+                previousBoard = previousBoard.previousElementSibling;
+            }
+        }
+
+        // "Collapse All After" event listener
+        collapseAllAfter_button.onclick = function(e) {
+            console.log("FUCKER")
+            let nextBoard = newBoard.nextSibling;
+            while(nextBoard !== null)
+            {
+                let nextBoardContent = nextBoard.getElementsByClassName('board-content').item(0);
+                nextBoardContent.classList.toggle('hidden',true);
+                nextBoard = nextBoard.nextSibling;
+            }
+        }
+
+        // "Collapse All" event listener
+        collapseAll_button.onclick = function(e) {
+            let index = 0;
+            let currentBoard = boardContainer.getElementsByClassName('board').item(index);
+            while(currentBoard !== null)
+            {
+                let currentBoardContent = currentBoard.getElementsByClassName('board-content').item(0);
+                currentBoardContent.classList.toggle('hidden',true);
+                index ++;
+                currentBoard = boardContainer.getElementsByClassName('board').item(index);
+            }
+        }
+    }
+
+    
+</script>
+</html>

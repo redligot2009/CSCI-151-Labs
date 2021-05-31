@@ -1,0 +1,80 @@
+body
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* CSS for vertically and horizontally centered hero container */
+
+.hero
+{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(red,orange);
+    height: 400px;
+    color:white
+}
+
+/* SHARED CSS FOR 3 CARD FLEXBOX VS GRID LAYOUTS */
+
+.card-image
+{
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.card-title
+{
+    margin-left:1rem;
+    margin-right:1rem;
+    margin-top:1rem;
+}
+.card-content
+{
+    margin-left:1rem;
+    margin-right:1rem;
+    margin-bottom:1rem;
+}
+
+/* CSS for 3 card flexbox-based layout */
+
+.card-flex-container
+{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.card-flex
+{
+    flex:1 1 calc(33% - 1rem);
+    min-width: 400px;
+    margin: 0.5rem;
+    display:flex;
+    flex-direction: column;
+    background-image:linear-gradient(lightblue, white);
+    border-radius: 20px;
+    border-style:solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+/* CSS for 3 card grid-based layout */
+.card-grid-container
+{
+    display:grid;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-gap: 1rem;
+}
+.card-grid
+{
+    display:flex;
+    flex-direction: column;
+    background-image:linear-gradient(grey, white);
+    border-radius: 20px;
+    border-style:solid;
+    border-color: black;
+    border-width: 1px;
+}

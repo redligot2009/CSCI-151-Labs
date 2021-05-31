@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4 - Image Gallery</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div id='image-gallery'>
+
+    </div>
+
+    <!-- Fetch data from Chicago art gallery API -->
+    <script>
+
+        let artworks = [];
+
+        // Helper function to create new image DOM nodes for each artwork fetched.
+
+        function appendArtwork(image_url)
+        {
+            let imageGallery = document.getElementById('image-gallery')
+            let newImage_img = document.createElement('img');
+            newImage_img.setAttribute('src',image_url);
+            newImage_img.classList.add('artwork-image');
+            imageGallery.appendChild(newImage_img);
+        }
+        
+        /****************************************************************
+        *** TIER 1: Data fetching via GET request thru XMLHttpRequest.***
+        ****************************************************************/
+
+        // Uncomment the lines below to test (make sure to comment other parts)
+        /*
+        let getArtworks = new XMLHttpRequest();
+        let IIIFConfigURL = '';
+        getArtworks.open('GET','https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number,image_id')
+        getArtworks.responseType = 'json';
+        getArtworks.send();
+        getArtworks.onload = function () {
+            if(getArtworks.status==200)
+            {
+                console.log(`Loaded artworks. Status: ${getArtworks.status}`);
+                console.log(getArtworks.response);
+                artworks = getArtworks.response.data;
+                IIIFConfigURL = getArtworks.response.config.iiif_url;
+                for(let i = 0; i < artworks.length; i++)
+                {
+                    console.log(artworks[i]);
+                    let artworkImageURL = `${IIIFConfigURL}/${artworks[i].image_id}/full/843,/0/default.jpg`;
+                    appendArtwork(artworkImageURL);
+                    console.log(artworkImageURL);
+                }
+            }
+            else if(getArtworks.status == 404)
+            {
+                console.log(`Artwork/s not found. Status: ${getArtworks.status}`)
+            }
+            else if(getArtworks.status == 500)
+            {
+                console.log(`Bad request. Status: ${getArtworks.status}`)
+            }
+        }
+        getArtworks.onerror = function() {
+            console.log(`Failed to load artworks. Status: ${xhr.status}`);
+        }
+        */
+    
+        /**************************************************************************
+        *** TIER 2-3: Data fetching via GET request thru Promises and Fetch API.***
+        **************************************************************************/
+        ( async()=>{
+            
+            let IIIFConfigURL = '';
+            artworks = 
+            await fetch('https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number,image_id')
+                .then(response=>response.json())
+                .then(data=>{
+                    IIIFConfigURL = data.config.iiif_url;
+                    return data.data;
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            for(let i = 0; i < artworks.length; i++)
+            {
+                let image_url = `${IIIFConfigURL}/${artworks[i].image_id}/full/843,/0/default.jpg`
+                appendArtwork(image_url)
+            }
+            
+        }) ();
+    
+
+    </script>
+
+</body>
+</html>
